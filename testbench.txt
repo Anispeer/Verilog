@@ -1,0 +1,23 @@
+module memory_test;
+  reg [7:0]data_in;
+  reg w,r,rst,clk;
+  wire[7:0]data_out;
+  wire full;
+  wire empty;
+
+  memory dut(data_in,rst,w,r,clk,data_out,full,empty);
+  
+  initial
+    begin 
+      $dumpfile("dump.vcd");
+      $dumpvars(1);
+      rst=0;clk=1;w=0;r=0;
+      #5rst=1;
+      #5w=1;r=0;data_in=8'b00000000;
+      #10w=1;r=0;data_in=8'b00000001;
+      #5r=1;w=0;
+
+      #100$finish;
+    end
+  always #5clk=~clk;
+endmodule
